@@ -1,0 +1,103 @@
+{
+  "timestamp_utc": "2026-10-04T16:53:03.776699+00:00",
+  "database": "ecommerce_store",
+  "collection": "orders_validated",
+  "collection_total_documents": 1791633,
+  "indexes_tested": [
+    "idx_customer_id",
+    "idx_city_status",
+    "idx_total_amount"
+  ],
+  "experiments": [
+    {
+      "query_name": "orders_by_customer",
+      "target_index": "idx_customer_id",
+      "description": "Lookup orders for customer_id='عميل-20'",
+      "before": {
+        "executionTimeMillis": 2276,
+        "totalKeysExamined": 0,
+        "totalDocsExamined": 1791633,
+        "nReturned": 1,
+        "winningPlanStage": "LIMIT -> COLLSCAN",
+        "rootStage": "LIMIT",
+        "indexUsed": null
+      },
+      "after": {
+        "executionTimeMillis": 0,
+        "totalKeysExamined": 1,
+        "totalDocsExamined": 1,
+        "nReturned": 1,
+        "winningPlanStage": "LIMIT -> FETCH -> IXSCAN",
+        "rootStage": "LIMIT",
+        "indexUsed": null
+      },
+      "difference": {
+        "docs_examined_saved": 1791632,
+        "keys_examined_delta": 1,
+        "time_millis_delta": 2276,
+        "stage_transition": "LIMIT -> COLLSCAN -> LIMIT -> FETCH -> IXSCAN"
+      },
+      "interpretation": "Examined docs dropped from 1791633 to 1 (reduction of 1,791,632 docs). Plan transformed from LIMIT -> COLLSCAN to LIMIT -> FETCH -> IXSCAN."
+    },
+    {
+      "query_name": "orders_by_city_and_status",
+      "target_index": "idx_city_status",
+      "description": "Compound lookup for city='ذمار' and status='قيد الشحن'",
+      "before": {
+        "executionTimeMillis": 9,
+        "totalKeysExamined": 0,
+        "totalDocsExamined": 22583,
+        "nReturned": 50,
+        "winningPlanStage": "LIMIT -> COLLSCAN",
+        "rootStage": "LIMIT",
+        "indexUsed": null
+      },
+      "after": {
+        "executionTimeMillis": 9,
+        "totalKeysExamined": 50,
+        "totalDocsExamined": 50,
+        "nReturned": 50,
+        "winningPlanStage": "LIMIT -> FETCH -> IXSCAN",
+        "rootStage": "LIMIT",
+        "indexUsed": null
+      },
+      "difference": {
+        "docs_examined_saved": 22533,
+        "keys_examined_delta": 50,
+        "time_millis_delta": 0,
+        "stage_transition": "LIMIT -> COLLSCAN -> LIMIT -> FETCH -> IXSCAN"
+      },
+      "interpretation": "Examined docs dropped from 22583 to 50 (reduction of 22,533 docs). Plan transformed from LIMIT -> COLLSCAN to LIMIT -> FETCH -> IXSCAN."
+    },
+    {
+      "query_name": "high_value_orders",
+      "target_index": "idx_total_amount",
+      "description": "High value range filter and sort total_amount >= 290500.0",
+      "before": {
+        "executionTimeMillis": 2473,
+        "totalKeysExamined": 0,
+        "totalDocsExamined": 1791633,
+        "nReturned": 50,
+        "winningPlanStage": "SORT -> COLLSCAN",
+        "rootStage": "SORT",
+        "indexUsed": null
+      },
+      "after": {
+        "executionTimeMillis": 7,
+        "totalKeysExamined": 50,
+        "totalDocsExamined": 50,
+        "nReturned": 50,
+        "winningPlanStage": "LIMIT -> FETCH -> IXSCAN",
+        "rootStage": "LIMIT",
+        "indexUsed": null
+      },
+      "difference": {
+        "docs_examined_saved": 1791583,
+        "keys_examined_delta": 50,
+        "time_millis_delta": 2466,
+        "stage_transition": "SORT -> COLLSCAN -> LIMIT -> FETCH -> IXSCAN"
+      },
+      "interpretation": "Examined docs dropped from 1791633 to 50 (reduction of 1,791,583 docs). Plan transformed from SORT -> COLLSCAN to LIMIT -> FETCH -> IXSCAN."
+    }
+  ]
+}

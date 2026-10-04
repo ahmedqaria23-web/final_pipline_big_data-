@@ -1,0 +1,5 @@
+id_order,order_date,customer_name,phone,status,total_amount
+ORD-DUP-001,2026-09-02,Customer A,777111222,مؤكد,1000
+ORD-DUP-001,2026-09-02,Customer A,777111222,مؤكد,2000
+ORD-DUP-002,2026-09-02,Customer B,777333444,قيد الانتظار,3000
+ORD-DUP-001,2026-09-02,Customer A,777111222,مؤكد,4000

@@ -1,0 +1,464 @@
+{
+  "timestamp_utc": "2026-10-04T14:56:57.090321+00:00",
+  "database": "ecommerce_store",
+  "collection": "orders_validated",
+  "total_documents": 1791632,
+  "reports": {
+    "sales_by_city": {
+      "description": "Aggregates revenue and order volume by shipping city.",
+      "total_rows": 10,
+      "data": [
+        {
+          "total_orders": 198364,
+          "city": "صنعاء",
+          "total_revenue": 46548217500.0,
+          "avg_order_value": 234660.61
+        },
+        {
+          "total_orders": 177657,
+          "city": "لحج",
+          "total_revenue": 46415848000.0,
+          "avg_order_value": 261266.64
+        },
+        {
+          "total_orders": 177418,
+          "city": "عدن",
+          "total_revenue": 46237077500.0,
+          "avg_order_value": 260610.97
+        },
+        {
+          "total_orders": 176824,
+          "city": "الحديدة",
+          "total_revenue": 46152542000.0,
+          "avg_order_value": 261008.36
+        },
+        {
+          "total_orders": 176737,
+          "city": "إب",
+          "total_revenue": 46145606000.0,
+          "avg_order_value": 261097.6
+        },
+        {
+          "total_orders": 177466,
+          "city": "المكلا",
+          "total_revenue": 46073059000.0,
+          "avg_order_value": 259616.26
+        },
+        {
+          "total_orders": 176425,
+          "city": "تعز",
+          "total_revenue": 46032862000.0,
+          "avg_order_value": 260920.29
+        },
+        {
+          "total_orders": 176868,
+          "city": "عمران",
+          "total_revenue": 45925990000.0,
+          "avg_order_value": 259662.52
+        },
+        {
+          "total_orders": 176897,
+          "city": "حجة",
+          "total_revenue": 45885950500.0,
+          "avg_order_value": 259393.6
+        },
+        {
+          "total_orders": 176976,
+          "city": "ذمار",
+          "total_revenue": 45821312500.0,
+          "avg_order_value": 258912.58
+        }
+      ]
+    },
+    "top_products": {
+      "description": "Unwinds items and aggregates sales, units sold, and revenue per product/SKU.",
+      "total_rows": 10,
+      "data": [
+        {
+          "total_quantity_sold": 1178245,
+          "order_occurrences": 589324,
+          "sku": "SKU-1010",
+          "product_name": "هاتف سامسونج A54",
+          "total_revenue": 259246416000.0
+        },
+        {
+          "total_quantity_sold": 1177006,
+          "order_occurrences": 588607,
+          "sku": "SKU-1007",
+          "product_name": "قرص SSD محمول",
+          "total_revenue": 129485447000.0
+        },
+        {
+          "total_quantity_sold": 1180620,
+          "order_occurrences": 590698,
+          "sku": "SKU-1005",
+          "product_name": "سماعات رأس",
+          "total_revenue": 33656833500.0
+        },
+        {
+          "total_quantity_sold": 1176041,
+          "order_occurrences": 588233,
+          "sku": "SKU-1008",
+          "product_name": "محول HDMI",
+          "total_revenue": 11764550000.0
+        },
+        {
+          "total_quantity_sold": 1179533,
+          "order_occurrences": 589673,
+          "sku": "SKU-1002",
+          "product_name": "فأرة لاسلكية",
+          "total_revenue": 10611970000.0
+        },
+        {
+          "total_quantity_sold": 1179321,
+          "order_occurrences": 589486,
+          "sku": "SKU-1009",
+          "product_name": "شاحن سريع",
+          "total_revenue": 9434655500.0
+        },
+        {
+          "total_quantity_sold": 2290,
+          "order_occurrences": 1156,
+          "sku": "SKU-1",
+          "product_name": "هاتف سامسونج A54",
+          "total_revenue": 501988500.0
+        },
+        {
+          "total_quantity_sold": 2286,
+          "order_occurrences": 1149,
+          "sku": "SKU-1",
+          "product_name": "قرص SSD محمول",
+          "total_revenue": 254776000.0
+        },
+        {
+          "total_quantity_sold": 2344,
+          "order_occurrences": 1163,
+          "sku": "SKU-1",
+          "product_name": "سماعات رأس",
+          "total_revenue": 66889000.0
+        },
+        {
+          "total_quantity_sold": 2254,
+          "order_occurrences": 1138,
+          "sku": "SKU-1",
+          "product_name": "محول HDMI",
+          "total_revenue": 22542500.0
+        }
+      ]
+    },
+    "top_customers": {
+      "description": "Aggregates customer spend, order counts, and identifies high-value accounts.",
+      "total_rows": 10,
+      "data": [
+        {
+          "customer_name": "يوسف طارق",
+          "total_orders": 1,
+          "last_order_date": "2025-04-28T16:53:00",
+          "customer_id": "عميل-237376",
+          "total_spend": 2247500.0,
+          "avg_order_spend": 2247500.0
+        },
+        {
+          "customer_name": "أروى محمد",
+          "total_orders": 1,
+          "last_order_date": "2025-03-03T03:22:00",
+          "customer_id": "عميل-446510",
+          "total_spend": 2234000.0,
+          "avg_order_spend": 2234000.0
+        },
+        {
+          "customer_name": "أحمد محمد",
+          "total_orders": 1,
+          "last_order_date": "2025-02-08T01:43:00",
+          "customer_id": "عميل-1168454",
+          "total_spend": 2225000.0,
+          "avg_order_spend": 2225000.0
+        },
+        {
+          "customer_name": "أحمد محمد",
+          "total_orders": 1,
+          "last_order_date": "2025-04-01T09:59:00",
+          "customer_id": "عميل-1489898",
+          "total_spend": 2190500.0,
+          "avg_order_spend": 2190500.0
+        },
+        {
+          "customer_name": "أروى محمد",
+          "total_orders": 1,
+          "last_order_date": "2025-03-19T15:32:00",
+          "customer_id": "عميل-1799958",
+          "total_spend": 2189000.0,
+          "avg_order_spend": 2189000.0
+        },
+        {
+          "customer_name": "سارة ياسر",
+          "total_orders": 1,
+          "last_order_date": "2025-04-28T05:33:00",
+          "customer_id": "عميل-983107",
+          "total_spend": 2186000.0,
+          "avg_order_spend": 2186000.0
+        },
+        {
+          "customer_name": "يوسف طارق",
+          "total_orders": 1,
+          "last_order_date": "2025-04-06T07:39:00",
+          "customer_id": "عميل-963914",
+          "total_spend": 2174000.0,
+          "avg_order_spend": 2174000.0
+        },
+        {
+          "customer_name": "أحمد محمد",
+          "total_orders": 1,
+          "last_order_date": "2025-02-19T14:14:00",
+          "customer_id": "عميل-1934088",
+          "total_spend": 2171000.0,
+          "avg_order_spend": 2171000.0
+        },
+        {
+          "customer_name": "خالد سالم",
+          "total_orders": 1,
+          "last_order_date": "2025-03-29T22:48:00",
+          "customer_id": "عميل-1043207",
+          "total_spend": 2150000.0,
+          "avg_order_spend": 2150000.0
+        },
+        {
+          "customer_name": "خالد سالم",
+          "total_orders": 1,
+          "last_order_date": "2025-03-18T05:59:00",
+          "customer_id": "عميل-391362",
+          "total_spend": 2147000.0,
+          "avg_order_spend": 2147000.0
+        }
+      ]
+    },
+    "sales_by_period": {
+      "description": "Aggregates sales trends over time grouped by daily or monthly timeline periods.",
+      "total_rows": 30,
+      "data": [
+        {
+          "total_orders": 7039,
+          "period": "2025-19-45",
+          "total_revenue": 1864550500.0,
+          "avg_order_value": 264888.55
+        },
+        {
+          "total_orders": 5634,
+          "period": "2025-05-01",
+          "total_revenue": 1421399500.0,
+          "avg_order_value": 252289.58
+        },
+        {
+          "total_orders": 14814,
+          "period": "2025-04-30",
+          "total_revenue": 3836680000.0,
+          "avg_order_value": 258990.14
+        },
+        {
+          "total_orders": 14870,
+          "period": "2025-04-29",
+          "total_revenue": 3841658000.0,
+          "avg_order_value": 258349.56
+        },
+        {
+          "total_orders": 14560,
+          "period": "2025-04-28",
+          "total_revenue": 3794359500.0,
+          "avg_order_value": 260601.61
+        },
+        {
+          "total_orders": 14882,
+          "period": "2025-04-27",
+          "total_revenue": 3819336500.0,
+          "avg_order_value": 256641.35
+        },
+        {
+          "total_orders": 14640,
+          "period": "2025-04-26",
+          "total_revenue": 3789787000.0,
+          "avg_order_value": 258865.23
+        },
+        {
+          "total_orders": 14617,
+          "period": "2025-04-25",
+          "total_revenue": 3784891000.0,
+          "avg_order_value": 258937.61
+        },
+        {
+          "total_orders": 14719,
+          "period": "2025-04-24",
+          "total_revenue": 3839188000.0,
+          "avg_order_value": 260832.12
+        },
+        {
+          "total_orders": 14653,
+          "period": "2025-04-23",
+          "total_revenue": 3818126000.0,
+          "avg_order_value": 260569.58
+        },
+        {
+          "total_orders": 14641,
+          "period": "2025-04-22",
+          "total_revenue": 3800707500.0,
+          "avg_order_value": 259593.44
+        },
+        {
+          "total_orders": 14958,
+          "period": "2025-04-21",
+          "total_revenue": 3895057500.0,
+          "avg_order_value": 260399.62
+        },
+        {
+          "total_orders": 14697,
+          "period": "2025-04-20",
+          "total_revenue": 3822990500.0,
+          "avg_order_value": 260120.47
+        },
+        {
+          "total_orders": 14468,
+          "period": "2025-04-19",
+          "total_revenue": 3724599500.0,
+          "avg_order_value": 257437.07
+        },
+        {
+          "total_orders": 14777,
+          "period": "2025-04-18",
+          "total_revenue": 3890342500.0,
+          "avg_order_value": 263270.12
+        },
+        {
+          "total_orders": 14821,
+          "period": "2025-04-17",
+          "total_revenue": 3901058500.0,
+          "avg_order_value": 263211.56
+        },
+        {
+          "total_orders": 14450,
+          "period": "2025-04-16",
+          "total_revenue": 3797692000.0,
+          "avg_order_value": 262816.06
+        },
+        {
+          "total_orders": 14966,
+          "period": "2025-04-15",
+          "total_revenue": 3881859500.0,
+          "avg_order_value": 259378.56
+        },
+        {
+          "total_orders": 14777,
+          "period": "2025-04-14",
+          "total_revenue": 3896342000.0,
+          "avg_order_value": 263676.12
+        },
+        {
+          "total_orders": 14778,
+          "period": "2025-04-13",
+          "total_revenue": 3872393500.0,
+          "avg_order_value": 262037.72
+        },
+        {
+          "total_orders": 14793,
+          "period": "2025-04-12",
+          "total_revenue": 3799637000.0,
+          "avg_order_value": 256853.71
+        },
+        {
+          "total_orders": 14691,
+          "period": "2025-04-11",
+          "total_revenue": 3878064000.0,
+          "avg_order_value": 263975.5
+        },
+        {
+          "total_orders": 14620,
+          "period": "2025-04-10",
+          "total_revenue": 3723748500.0,
+          "avg_order_value": 254702.36
+        },
+        {
+          "total_orders": 14576,
+          "period": "2025-04-09",
+          "total_revenue": 3800679500.0,
+          "avg_order_value": 260749.14
+        },
+        {
+          "total_orders": 14615,
+          "period": "2025-04-08",
+          "total_revenue": 3816854000.0,
+          "avg_order_value": 261160.04
+        },
+        {
+          "total_orders": 14699,
+          "period": "2025-04-07",
+          "total_revenue": 3825033500.0,
+          "avg_order_value": 260224.06
+        },
+        {
+          "total_orders": 14768,
+          "period": "2025-04-06",
+          "total_revenue": 3865601000.0,
+          "avg_order_value": 261755.21
+        },
+        {
+          "total_orders": 14643,
+          "period": "2025-04-05",
+          "total_revenue": 3809936000.0,
+          "avg_order_value": 260188.21
+        },
+        {
+          "total_orders": 14708,
+          "period": "2025-04-04",
+          "total_revenue": 3820374500.0,
+          "avg_order_value": 259748.06
+        },
+        {
+          "total_orders": 14868,
+          "period": "2025-04-03",
+          "total_revenue": 3813337500.0,
+          "avg_order_value": 256479.52
+        }
+      ]
+    },
+    "orders_by_status": {
+      "description": "Aggregates order distribution, total financial value, and volume across fulfillment statuses.",
+      "total_rows": 6,
+      "data": [
+        {
+          "count_orders": 314911,
+          "status": "مؤكد",
+          "total_value": 76808565500.0,
+          "avg_value": 243905.63
+        },
+        {
+          "count_orders": 296056,
+          "status": "قيد الشحن",
+          "total_value": 76968666000.0,
+          "avg_value": 259980.09
+        },
+        {
+          "count_orders": 295991,
+          "status": "ملغي",
+          "total_value": 77273331500.0,
+          "avg_value": 261066.49
+        },
+        {
+          "count_orders": 295163,
+          "status": "قيد الانتظار",
+          "total_value": 76732859000.0,
+          "avg_value": 259967.74
+        },
+        {
+          "count_orders": 294930,
+          "status": "مرتجع",
+          "total_value": 76794440500.0,
+          "avg_value": 260381.92
+        },
+        {
+          "count_orders": 294581,
+          "status": "تم التسليم",
+          "total_value": 76660602500.0,
+          "avg_value": 260236.07
+        }
+      ]
+    }
+  }
+}
