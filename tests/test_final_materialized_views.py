@@ -234,3 +234,194 @@ def test_get_materialized_view_data(mv_test_db):
 
     with pytest.raises(ValueError):
         get_materialized_view_data("invalid_view_name", db=db)
+
+
+# ─────────────────────────────────────────────────────────────
+# 4. Rigorous Key Mutation & Replay Lifecycle Tests
+# ─────────────────────────────────────────────────────────────
+def test_materialized_views_incremental_key_changes_and_updates(mv_test_db):
+    """
+    Verifies that incremental refresh handles:
+    1. New order insertion.
+    2. Replaying unchanged records without incorrect mutations.
+    3. Updating order amounts (recalculated correctly).
+    4. Moving order_date from old date to new date (both dates recalculated, old date cleared if empty).
+    5. Changing item SKU from old SKU to new SKU (both SKUs recalculated, old SKU cleared if empty).
+    6. Verifying old aggregation key is corrected.
+    7. Verifying new aggregation key is correct.
+    8. Verifying unrelated keys remain untouched.
+    """
+    db = mv_test_db
+    coll_orders = db[COLLECTION_VALIDATED]
+    coll_daily = db[COLLECTION_DAILY_SALES]
+    coll_prod = db[COLLECTION_TOP_PRODUCTS]
+
+    # Baseline:
+    # ORD-MV-001 (2025-01-10): LAPTOP (1000), MOUSE (50) -> total 1050
+    # ORD-MV-002 (2025-01-10): MOUSE (25) -> total 25
+    # ORD-MV-003 (2025-01-20): KEYBOARD (80) -> total 80
+    refresh_materialized_views(full_refresh=True, db=db)
+
+    assert coll_daily.count_documents({}) == 2
+    assert coll_daily.find_one({"_id": "2025-01-10"})["total_revenue"] == 1075.0
+    assert coll_daily.find_one({"_id": "2025-01-20"})["total_revenue"] == 80.0
+
+    # -------------------------------------------------------------------------
+    # Test 1 & 2: Replay unchanged record (idempotency check)
+    # -------------------------------------------------------------------------
+    replay_res = refresh_materialized_views(full_refresh=False, db=db)
+    assert replay_res["views"][COLLECTION_DAILY_SALES]["status"] == "up_to_date"
+    assert replay_res["views"][COLLECTION_TOP_PRODUCTS]["status"] == "up_to_date"
+
+    # -------------------------------------------------------------------------
+    # Test 3: Insert new order
+    # -------------------------------------------------------------------------
+    new_order = {
+        "id_order": "ORD-MV-004",
+        "order_date": "2025-02-05T12:00:00Z",
+        "updated_at": "2025-02-05T12:00:00Z",
+        "status": "مؤكد",
+        "customer": {"customer_id": "CUS-4", "name": "Mona", "phone": "967771122334", "email": "m@ex.com", "address": {"city": "إب", "district": "الظهار"}},
+        "items": [
+            {"sku": "SKU-MONITOR", "name": "Monitor", "qty": 1, "unit_price": 300.0, "total": 300.0}
+        ],
+        "payment": {"method": "بطاقة", "status": "تم الدفع", "currency": "YER", "amount": 300.0},
+        "total_amount": 300.0,
+        "quality_status": "valid"
+    }
+    coll_orders.insert_one(new_order)
+
+    ins_res = refresh_materialized_views(full_refresh=False, db=db)
+    daily_res = ins_res["views"][COLLECTION_DAILY_SALES]
+    prod_res = ins_res["views"][COLLECTION_TOP_PRODUCTS]
+
+    # Only affected keys recalculated
+    assert daily_res["affected_periods"] == ["2025-02-05"]
+    assert prod_res["affected_skus"] == ["SKU-MONITOR"]
+
+    # Verify new key is correct
+    assert coll_daily.find_one({"_id": "2025-02-05"})["total_revenue"] == 300.0
+    assert coll_prod.find_one({"_id": "SKU-MONITOR"})["total_revenue"] == 300.0
+
+    # Verify unrelated keys untouched
+    assert coll_daily.find_one({"_id": "2025-01-10"})["total_revenue"] == 1075.0
+    assert coll_prod.find_one({"_id": "SKU-LAPTOP"})["total_revenue"] == 1000.0
+
+    # -------------------------------------------------------------------------
+    # Test 4: Update order amount
+    # -------------------------------------------------------------------------
+    coll_orders.update_one(
+        {"id_order": "ORD-MV-004"},
+        {"$set": {
+            "total_amount": 450.0,
+            "items.0.total": 450.0,
+            "items.0.unit_price": 450.0,
+            "updated_at": "2025-02-05T15:00:00Z"
+        }}
+    )
+    amt_res = refresh_materialized_views(full_refresh=False, db=db)
+    assert "2025-02-05" in amt_res["views"][COLLECTION_DAILY_SALES]["affected_periods"]
+    assert "SKU-MONITOR" in amt_res["views"][COLLECTION_TOP_PRODUCTS]["affected_skus"]
+
+    assert coll_daily.find_one({"_id": "2025-02-05"})["total_revenue"] == 450.0
+    assert coll_prod.find_one({"_id": "SKU-MONITOR"})["total_revenue"] == 450.0
+    # Unrelated untouched
+    assert coll_daily.find_one({"_id": "2025-01-10"})["total_revenue"] == 1075.0
+
+    # -------------------------------------------------------------------------
+    # Test 5: Update order_date from old date to new date (CASE A)
+    # Move ORD-MV-003 from 2025-01-20 to 2025-01-25
+    # Since ORD-MV-003 was the ONLY order on 2025-01-20, old date must be removed/corrected
+    # -------------------------------------------------------------------------
+    coll_orders.update_one(
+        {"id_order": "ORD-MV-003"},
+        {"$set": {
+            "order_date": "2025-01-25T11:00:00Z",
+            "updated_at": "2025-02-06T10:00:00Z"
+        }}
+    )
+    date_res = refresh_materialized_views(full_refresh=False, db=db)
+    daily_res = date_res["views"][COLLECTION_DAILY_SALES]
+
+    # Verify BOTH old and new dates were detected as affected
+    assert "2025-01-20" in daily_res["affected_periods"]
+    assert "2025-01-25" in daily_res["affected_periods"]
+
+    # Verify old date no longer has stale data (purged because 0 orders remain)
+    assert coll_daily.find_one({"_id": "2025-01-20"}) is None
+
+    # Verify new date is aggregated correctly
+    new_date_doc = coll_daily.find_one({"_id": "2025-01-25"})
+    assert new_date_doc is not None
+    assert new_date_doc["total_orders"] == 1
+    assert new_date_doc["total_revenue"] == 80.0
+
+    # Verify unrelated date untouched
+    assert coll_daily.find_one({"_id": "2025-01-10"})["total_revenue"] == 1075.0
+
+    # -------------------------------------------------------------------------
+    # Test 6: Update SKU from old SKU to new SKU (CASE B - Sole order with that SKU)
+    # Move ORD-MV-003 item from SKU-KEYBOARD to SKU-HEADPHONES
+    # Since SKU-KEYBOARD has no other orders, it must be purged, and HEADPHONES added
+    # -------------------------------------------------------------------------
+    coll_orders.update_one(
+        {"id_order": "ORD-MV-003"},
+        {"$set": {
+            "items": [{"sku": "SKU-HEADPHONES", "name": "Headphones", "qty": 1, "unit_price": 80.0, "total": 80.0}],
+            "updated_at": "2025-02-07T10:00:00Z"
+        }}
+    )
+    sku_res = refresh_materialized_views(full_refresh=False, db=db)
+    prod_res = sku_res["views"][COLLECTION_TOP_PRODUCTS]
+
+    # Verify BOTH old and new SKUs were detected as affected
+    assert "SKU-KEYBOARD" in prod_res["affected_skus"]
+    assert "SKU-HEADPHONES" in prod_res["affected_skus"]
+
+    # Verify old SKU is purged (0 orders remain)
+    assert coll_prod.find_one({"_id": "SKU-KEYBOARD"}) is None
+
+    # Verify new SKU is created with correct totals
+    headphones = coll_prod.find_one({"_id": "SKU-HEADPHONES"})
+    assert headphones is not None
+    assert headphones["total_quantity_sold"] == 1
+    assert headphones["total_revenue"] == 80.0
+
+    # Verify unrelated SKUs untouched
+    assert coll_prod.find_one({"_id": "SKU-LAPTOP"})["total_quantity_sold"] == 1
+    assert coll_prod.find_one({"_id": "SKU-LAPTOP"})["total_revenue"] == 1000.0
+
+    # -------------------------------------------------------------------------
+    # Test 7: Update SKU where old SKU still has remaining orders elsewhere
+    # ORD-MV-002 currently has SKU-MOUSE (qty 1, total 25).
+    # ORD-MV-001 also has SKU-MOUSE (qty 2, total 50). Total MOUSE: qty 3, rev 75.
+    # Change ORD-MV-002 to SKU-PAD (qty 1, total 25).
+    # Expected: SKU-MOUSE drops to qty 2, rev 50. SKU-PAD becomes qty 1, rev 25.
+    # -------------------------------------------------------------------------
+    coll_orders.update_one(
+        {"id_order": "ORD-MV-002"},
+        {"$set": {
+            "items": [{"sku": "SKU-PAD", "name": "Mousepad", "qty": 1, "unit_price": 25.0, "total": 25.0}],
+            "updated_at": "2025-02-08T10:00:00Z"
+        }}
+    )
+    sku_partial_res = refresh_materialized_views(full_refresh=False, db=db)
+    partial_prod = sku_partial_res["views"][COLLECTION_TOP_PRODUCTS]
+
+    assert "SKU-MOUSE" in partial_prod["affected_skus"]
+    assert "SKU-PAD" in partial_prod["affected_skus"]
+
+    mouse_doc = coll_prod.find_one({"_id": "SKU-MOUSE"})
+    assert mouse_doc is not None
+    assert mouse_doc["total_quantity_sold"] == 2
+    assert mouse_doc["total_revenue"] == 50.0
+    assert mouse_doc["order_occurrences"] == 1
+
+    pad_doc = coll_prod.find_one({"_id": "SKU-PAD"})
+    assert pad_doc is not None
+    assert pad_doc["total_quantity_sold"] == 1
+    assert pad_doc["total_revenue"] == 25.0
+
+    # Unrelated untouched
+    assert coll_prod.find_one({"_id": "SKU-LAPTOP"})["total_quantity_sold"] == 1
+

@@ -1,6 +1,6 @@
 # MongoDB Explain('executionStats') Experiment Report
 
-**Date**: 2026-10-04T16:53:03.776699+00:00  
+**Date**: 2026-10-04T18:48:48.138310+00:00  
 **Database**: `ecommerce_store`  
 **Collection**: `orders_validated`  
 **Total Records Evaluated**: `1,791,633`  
@@ -24,7 +24,7 @@
 | **Winning Plan Stage** | `LIMIT -> COLLSCAN` | `LIMIT -> FETCH -> IXSCAN` | `LIMIT -> COLLSCAN -> LIMIT -> FETCH -> IXSCAN` |
 | **Total Docs Examined** | `1,791,633` | `1` | **1,791,632 fewer docs scanned** |
 | **Total Keys Examined** | `0` | `1` | `1 index keys read` |
-| **Execution Time (ms)** | `2276 ms` | `0 ms` | `Δ 2276 ms` |
+| **Execution Time (ms)** | `3232 ms` | `9 ms` | `Δ 3223 ms` |
 | **Returned Docs** | `1` | `1` | Exact same result count |
 
 > **Interpretation**: Examined docs dropped from 1791633 to 1 (reduction of 1,791,632 docs). Plan transformed from LIMIT -> COLLSCAN to LIMIT -> FETCH -> IXSCAN.
@@ -38,7 +38,7 @@
 | **Winning Plan Stage** | `LIMIT -> COLLSCAN` | `LIMIT -> FETCH -> IXSCAN` | `LIMIT -> COLLSCAN -> LIMIT -> FETCH -> IXSCAN` |
 | **Total Docs Examined** | `22,583` | `50` | **22,533 fewer docs scanned** |
 | **Total Keys Examined** | `0` | `50` | `50 index keys read` |
-| **Execution Time (ms)** | `9 ms` | `9 ms` | `Δ 0 ms` |
+| **Execution Time (ms)** | `11 ms` | `5 ms` | `Δ 6 ms` |
 | **Returned Docs** | `50` | `50` | Exact same result count |
 
 > **Interpretation**: Examined docs dropped from 22583 to 50 (reduction of 22,533 docs). Plan transformed from LIMIT -> COLLSCAN to LIMIT -> FETCH -> IXSCAN.
@@ -52,7 +52,7 @@
 | **Winning Plan Stage** | `SORT -> COLLSCAN` | `LIMIT -> FETCH -> IXSCAN` | `SORT -> COLLSCAN -> LIMIT -> FETCH -> IXSCAN` |
 | **Total Docs Examined** | `1,791,633` | `50` | **1,791,583 fewer docs scanned** |
 | **Total Keys Examined** | `0` | `50` | `50 index keys read` |
-| **Execution Time (ms)** | `2473 ms` | `7 ms` | `Δ 2466 ms` |
+| **Execution Time (ms)** | `4092 ms` | `4 ms` | `Δ 4088 ms` |
 | **Returned Docs** | `50` | `50` | Exact same result count |
 
 > **Interpretation**: Examined docs dropped from 1791633 to 50 (reduction of 1,791,583 docs). Plan transformed from SORT -> COLLSCAN to LIMIT -> FETCH -> IXSCAN.

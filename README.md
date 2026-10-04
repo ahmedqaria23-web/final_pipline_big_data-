@@ -4,7 +4,7 @@
 [![Apache PySpark](https://img.shields.io/badge/Apache%20PySpark-3.5%2B-E25A1C.svg?logo=apachespark&logoColor=white)](https://spark.apache.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0%2B-green.svg?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Tests](https://img.shields.io/badge/Tests-129%20Passed%20(100%25)-brightgreen.svg?logo=pytest&logoColor=white)](https://docs.pytest.org/)
+[![Tests](https://img.shields.io/badge/Tests-130%20Passed%20(100%25)-brightgreen.svg?logo=pytest&logoColor=white)](https://docs.pytest.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 An enterprise-grade **Hybrid ELT (Extract-Load-Transform) Data Engineering Pipeline & Unified Analytics Platform** designed to ingest, normalize, and validate high-volume e-commerce datasets. Features dynamic file-size engine routing between a memory-efficient **Python Streaming Batch Loader** and a distributed **Apache PySpark Engine**, deterministic **14-rule automated cleaning**, strict **quarantine isolation**, **3-stage idempotency**, **analytical indexes with execution plan explain analysis**, **5 production aggregation pipelines**, **incremental materialized views ($merge)**, **audit-logged background job scheduler**, and a **Unified FastAPI Execution Interface**.
@@ -20,7 +20,7 @@ An enterprise-grade **Hybrid ELT (Extract-Load-Transform) Data Engineering Pipel
 - [5. MongoDB Requirements](#5-mongodb-requirements)
 - [6. Installation](#6-installation)
 - [7. Environment Configuration](#7-environment-configuration)
-- [8. .env.example](#8-envexample)
+- [8. .env.example / example.env](#8-envexample--exampleenv)
 - [9. requirements.txt](#9-requirementstxt)
 - [10. How to Start MongoDB](#10-how-to-start-mongodb)
 - [11. How to Run the Existing Ingestion Pipeline](#11-how-to-run-the-existing-ingestion-pipeline)
@@ -38,8 +38,11 @@ An enterprise-grade **Hybrid ELT (Extract-Load-Transform) Data Engineering Pipel
 - [23. Swagger URL](#23-swagger-url)
 - [24. API Endpoint Examples](#24-api-endpoint-examples)
 - [25. Expected Response Structure](#25-expected-response-structure)
-- [26. Troubleshooting](#26-troubleshooting)
-- [27. Project Structure](#27-project-structure)
+- [26. Understanding Idempotency](#26-understanding-idempotency)
+- [27. Understanding Incremental Loading](#27-understanding-incremental-loading)
+- [28. Troubleshooting](#28-troubleshooting)
+- [29. Project Structure](#29-project-structure)
+
 
 ---
 
@@ -180,7 +183,7 @@ pip install -r requirements.txt
 
 ## 7. Environment Configuration
 
-Copy `.env.example` to create your local `.env`:
+Copy `.env.example` (or `example.env`) to create your local `.env`:
 
 - **On Linux / macOS**:
 ```bash
@@ -193,7 +196,9 @@ Copy-Item .env.example .env
 
 ---
 
-## 8. .env.example
+## 8. .env.example / example.env
+
+Both `.env.example` and `example.env` templates are provided in the repository with non-sensitive defaults:
 
 ```ini
 # MongoDB Connection
@@ -241,6 +246,7 @@ apscheduler>=3.10.0
 fastapi>=0.110.0
 uvicorn>=0.28.0
 httpx>=0.27.0
+pydantic>=2.0.0
 ```
 
 ---
@@ -299,20 +305,32 @@ python -c "from src.pipeline.elt_pipeline import run_elt_pipeline; print(run_elt
 
 ## 13. How to Run Large Data
 
-To force or test large dataset processing through Apache PySpark:
+The pipeline automatically routes files **> 200 MB** to the **Apache PySpark Distributed Loader**.
+
+Execute on the large dataset (`orders_1_million_from_5m.csv` ~438 MB):
 ```bash
-python -c "from src.pipeline.pipeline_controller import run_pipeline_for_file; print(run_pipeline_for_file('data/large_dataset.csv', threshold_mb=0.001))"
+python -c "from src.pipeline.pipeline_controller import run_pipeline_for_file; print(run_pipeline_for_file('data/orders_1_million_from_5m.csv'))"
+```
+
+Or force PySpark processing on sample files by setting a small threshold (e.g. `threshold_mb=0.001`):
+```bash
+python -c "from src.pipeline.pipeline_controller import run_pipeline_for_file; print(run_pipeline_for_file('data/sample_orders.csv', threshold_mb=0.001))"
 ```
 
 ---
 
 ## 14. How to Run Tests
 
-The repository includes a comprehensive 129-test automated suite covering all 7 phases:
+The repository includes a comprehensive 130-test automated suite covering all phases:
 
 Run all tests:
 ```bash
 pytest -v
+```
+
+Or quick summary:
+```bash
+pytest -q
 ```
 
 Run specific test modules:
@@ -345,7 +363,7 @@ pytest tests/test_final_generalization.py -v
 
 Run index creation programmatically:
 ```bash
-python -c "from src.analytics.indexes import ensure_analytics_indexes; print(ensure_analytics_indexes())"
+python -c "from src.analytics.indexes import create_analytics_indexes; print(create_analytics_indexes())"
 ```
 
 List active indexes in `orders_validated`:
@@ -400,8 +418,9 @@ Compare query execution plans (`COLLSCAN` vs `IXSCAN`) before and after index cr
 python -c "from src.analytics.indexes import run_explain_experiment; print(run_explain_experiment())"
 ```
 This generates:
-- `reports/explain_before_after_indexes.json`
-- `reports/explain_before_after_indexes.md`
+- `reports/explain_results.json`
+- `reports/explain_report.md`
+
 
 ---
 
@@ -608,12 +627,7 @@ curl -X POST http://localhost:8000/jobs/refresh_materialized_views/run
 {
   "query_name": "orders_by_city",
   "count": 10,
-  "parameters": {
-    "city": "Tokyo",
-    "limit": 10,
-    "skip": 0
-  },
-  "records": [
+  "data": [
     {
       "id_order": "ORD-001",
       "status": "delivered",
@@ -637,7 +651,53 @@ curl -X POST http://localhost:8000/jobs/refresh_materialized_views/run
 
 ---
 
-## 26. Troubleshooting
+## 26. Understanding Idempotency
+
+The platform guarantees strict **3-Stage End-to-End Idempotency** so that replaying or re-ingesting the exact same file or records never results in duplicate data, corrupted metrics, or drifted counts:
+
+1. **Stage 1: Raw Ingestion Deduplication (`orders_raw`)**:
+   - Every raw record is written with a deterministic primary key `_id = f"{id_run}:{number_row_source}"`.
+   - Repeatedly submitting the same execution batch results in zero duplicate raw entries.
+
+2. **Stage 2: Validated Storage & Hash-Checked Upsert (`orders_validated`)**:
+   - `orders_validated` enforces a unique index on the business key `ux_id_order` (`id_order`).
+   - Every cleaned record calculates a content hash (`record_hash`) representing its canonical payload.
+   - When an existing `id_order` is encountered:
+     - If `incoming_hash == existing_hash`: The record is marked `unchanged`. No write occurs, preserving the original `updated_at`.
+     - If `incoming_hash != existing_hash`: The document is replaced with the updated data and `updated_at` advances to the current timestamp (`updated: 1`).
+     - New orders are inserted (`inserted: 1`).
+
+3. **Stage 3: Downstream Views & Scheduled Jobs**:
+   - Materialized view refresh operations track changes via a persistent watermark (`updated_at > watermark`).
+   - Re-running the pipeline or replaying unchanged records without mutations results in an immediate no-op (`status: "up_to_date"`), ensuring summary collections never drift or double-count.
+
+---
+
+## 27. Understanding Incremental Loading
+
+To maintain sub-second response times without rescanning multi-million document collections, the analytics layer utilizes **Incremental Loading & Change Detection**:
+
+1. **Persistent Watermark Tracking**:
+   - Stored in MongoDB collection `meta_incremental_state` (and `meta_mv_watermark`).
+   - Tracks the highest `updated_at` ISO timestamp successfully processed in previous refresh cycles.
+
+2. **Delta Query Filtering**:
+   - Queries `orders_validated.find({"updated_at": {"$gt": watermark}})` to isolate only newly inserted or modified records.
+   - Bounded in-memory processing guarantees low memory footprint regardless of total collection size.
+
+3. **Stateful Key Lineage & Mutation Detection (`meta_mv_order_keys`)**:
+   - Tracks prior aggregation keys per order `{_id: id_order, date: YYYY-MM-DD, skus: [...]}`.
+   - When an order's `order_date` or item `sku` changes:
+     - Both the **old** key and the **new** key are detected as affected.
+     - The aggregation pipeline re-evaluates both keys.
+     - If all orders for an old key have moved (0 remaining orders), stale view entries are safely deleted.
+
+4. **Atomic In-Database Merging (`$merge`)**:
+   - Aggregated metrics update directly into `daily_sales_summary` and `top_products_summary` via MongoDB's `$merge` pipeline stage (`whenMatched: "replace"`, `whenNotMatched: "insert"`), ensuring atomic zero-downtime updates.
+
+---
+
+## 28. Troubleshooting
 
 | Issue | Root Cause | Solution |
 | :--- | :--- | :--- |
@@ -649,7 +709,7 @@ curl -X POST http://localhost:8000/jobs/refresh_materialized_views/run
 
 ---
 
-## 27. Project Structure
+## 29. Project Structure
 
 ```text
 .
@@ -657,12 +717,15 @@ curl -X POST http://localhost:8000/jobs/refresh_materialized_views/run
 │   ├── __init__.py
 │   └── settings.py               # Externalized pipeline, database & scheduler settings
 ├── data/
-│   └── sample_orders.csv         # Sample dataset for ingestion testing
+│   ├── sample_orders.csv         # Small sample dataset for rapid ingestion verification
+│   ├── sample_1000_1m.csv        # 1,000-order sample dataset
+│   └── orders_1_million_from_5m.csv # 438 MB dataset for PySpark engine verification
 ├── reports/
-│   ├── explain_before_after_indexes.json
-│   ├── explain_before_after_indexes.md
-│   ├── scheduled_periodic_report.json
-│   └── job_logs.json
+│   ├── explain_results.json      # Machine-readable Before/After explain executionStats
+│   ├── explain_report.md         # Formatted Markdown report on index scan performance
+│   ├── scheduled_periodic_report.json # Executive summary generated by background scheduler
+│   ├── aggregation_results.json  # Comprehensive export of 5 aggregation pipelines
+│   └── job_logs.json             # Rolling audit log of background and manual job runs
 ├── src/
 │   ├── analytics/
 │   │   ├── indexes.py            # Analytical indexes and before/after explain experiments
@@ -676,7 +739,9 @@ curl -X POST http://localhost:8000/jobs/refresh_materialized_views/run
 │   │   ├── cleaner.py            # 14-rule deterministic data cleaning
 │   │   └── rules.py
 │   ├── classification/
-│   │   └── classifier.py         # 3-way record classifier (Valid / Corrected / Quarantine)
+│   │   ├── classifier.py         # 3-way record classifier (Valid / Corrected / Quarantine)
+│   │   ├── streaming_classifier.py
+│   │   └── parallel_classifier.py
 │   ├── incremental/
 │   │   └── incremental_loader.py # Watermark & delta detection service
 │   ├── ingestion/
@@ -703,7 +768,6 @@ curl -X POST http://localhost:8000/jobs/refresh_materialized_views/run
 │   ├── test_checkpoint_recovery.py
 │   ├── test_classifier.py
 │   ├── test_cleaning_rules.py
-│   ├── test_elt_pipeline.py
 │   ├── test_final_aggregations.py
 │   ├── test_final_api.py
 │   ├── test_final_generalization.py
@@ -711,12 +775,16 @@ curl -X POST http://localhost:8000/jobs/refresh_materialized_views/run
 │   ├── test_final_materialized_views.py
 │   ├── test_final_scheduler.py
 │   ├── test_idempotency.py
+│   ├── test_performance_and_direct_upsert.py
 │   ├── test_quarantine_key.py
 │   ├── test_router.py
 │   ├── test_spark_loader_idempotency.py
+│   ├── test_task8_incremental_path_b.py
 │   └── test_validator.py
 ├── .env.example                  # Environment configuration template
+├── example.env                   # Additional environment template alias
 ├── pytest.ini                    # Pytest configuration
 ├── requirements.txt              # Production and testing dependencies
 └── README.md                     # Comprehensive project documentation & run guide
 ```
+
