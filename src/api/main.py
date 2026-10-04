@@ -152,7 +152,8 @@ def post_ingest(request_body: IngestRequest):
     try:
         metrics = run_pipeline_for_file(
             file_path=str(path_obj),
-            threshold_mb=threshold
+            threshold_mb=threshold,
+            engine=engine
         )
         return {
             "status": "SUCCESS",

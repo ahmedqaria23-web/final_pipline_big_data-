@@ -42,10 +42,16 @@ def check_system_status() -> Dict[str, Any]:
 def run_pipeline_for_file(
     file_path: str,
     progress_callback: Optional[Callable[[str, float], None]] = None,
-    threshold_mb: Optional[float] = None
+    threshold_mb: Optional[float] = None,
+    engine: Optional[str] = None
 ) -> Dict[str, Any]:
     """Executes the full ELT pipeline for a given input file path."""
-    return run_elt_pipeline(file_path, progress_callback=progress_callback, threshold_mb=threshold_mb)
+    return run_elt_pipeline(
+        file_path,
+        progress_callback=progress_callback,
+        threshold_mb=threshold_mb,
+        engine=engine
+    )
 
 
 def get_latest_metrics() -> Dict[str, Any]:

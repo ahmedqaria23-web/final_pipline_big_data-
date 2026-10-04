@@ -1,116 +1,53 @@
 {
-  "generated_at_utc": "2026-10-04T18:50:40.748313+00:00",
-  "database": "ecommerce_store",
+  "generated_at_utc": "2026-10-04T20:30:10.449065+00:00",
+  "database": "test_scheduler_phase5_db",
   "kpis": {
-    "total_validated_orders": 1791633,
+    "total_validated_orders": 2,
     "top_city_by_revenue": "صنعاء",
-    "top_product": "هاتف سامسونج A54"
+    "top_product": "Item A"
   },
   "top_5_cities": [
     {
-      "total_orders": 198365,
+      "total_orders": 1,
       "city": "صنعاء",
-      "total_revenue": 46548218000.0,
-      "avg_order_value": 234659.43
+      "total_revenue": 1000.0,
+      "avg_order_value": 1000.0
     },
     {
-      "total_orders": 177657,
-      "city": "لحج",
-      "total_revenue": 46415848000.0,
-      "avg_order_value": 261266.64
-    },
-    {
-      "total_orders": 177418,
+      "total_orders": 1,
       "city": "عدن",
-      "total_revenue": 46237077500.0,
-      "avg_order_value": 260610.97
-    },
-    {
-      "total_orders": 176824,
-      "city": "الحديدة",
-      "total_revenue": 46152542000.0,
-      "avg_order_value": 261008.36
-    },
-    {
-      "total_orders": 176737,
-      "city": "إب",
-      "total_revenue": 46145606000.0,
-      "avg_order_value": 261097.6
+      "total_revenue": 200.0,
+      "avg_order_value": 200.0
     }
   ],
   "top_5_products": [
     {
-      "total_quantity_sold": 1178245,
-      "order_occurrences": 589324,
-      "sku": "SKU-1010",
-      "product_name": "هاتف سامسونج A54",
-      "total_revenue": 259246416000.0
+      "total_quantity_sold": 2,
+      "order_occurrences": 1,
+      "sku": "SKU-A",
+      "product_name": "Item A",
+      "total_revenue": 1000.0
     },
     {
-      "total_quantity_sold": 1177006,
-      "order_occurrences": 588607,
-      "sku": "SKU-1007",
-      "product_name": "قرص SSD محمول",
-      "total_revenue": 129485447000.0
-    },
-    {
-      "total_quantity_sold": 1180620,
-      "order_occurrences": 590698,
-      "sku": "SKU-1005",
-      "product_name": "سماعات رأس",
-      "total_revenue": 33656833500.0
-    },
-    {
-      "total_quantity_sold": 1176041,
-      "order_occurrences": 588233,
-      "sku": "SKU-1008",
-      "product_name": "محول HDMI",
-      "total_revenue": 11764550000.0
-    },
-    {
-      "total_quantity_sold": 1179533,
-      "order_occurrences": 589673,
-      "sku": "SKU-1002",
-      "product_name": "فأرة لاسلكية",
-      "total_revenue": 10611970000.0
+      "total_quantity_sold": 1,
+      "order_occurrences": 1,
+      "sku": "SKU-B",
+      "product_name": "Item B",
+      "total_revenue": 200.0
     }
   ],
   "status_distribution": [
     {
-      "count_orders": 314912,
+      "count_orders": 1,
       "status": "مؤكد",
-      "total_value": 76808566000.0,
-      "avg_value": 243904.86
+      "total_value": 1000.0,
+      "avg_value": 1000.0
     },
     {
-      "count_orders": 296056,
-      "status": "قيد الشحن",
-      "total_value": 76968666000.0,
-      "avg_value": 259980.09
-    },
-    {
-      "count_orders": 295991,
-      "status": "ملغي",
-      "total_value": 77273331500.0,
-      "avg_value": 261066.49
-    },
-    {
-      "count_orders": 295163,
-      "status": "قيد الانتظار",
-      "total_value": 76732859000.0,
-      "avg_value": 259967.74
-    },
-    {
-      "count_orders": 294930,
-      "status": "مرتجع",
-      "total_value": 76794440500.0,
-      "avg_value": 260381.92
-    },
-    {
-      "count_orders": 294581,
+      "count_orders": 1,
       "status": "تم التسليم",
-      "total_value": 76660602500.0,
-      "avg_value": 260236.07
+      "total_value": 200.0,
+      "avg_value": 200.0
     }
   ]
 }

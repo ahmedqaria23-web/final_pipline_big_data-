@@ -1007,5 +1007,525 @@
       "top_product": "هاتف سامسونج A54"
     },
     "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T19:38:31.230309+00:00",
+    "end_time": "2026-10-04T19:38:37.772865+00:00",
+    "duration_seconds": 6.5432,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T19:38:37.772865+00:00",
+      "total_elapsed_seconds": 6.5431,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_periods_count": 0,
+          "affected_periods": [],
+          "total_documents_in_view": 122,
+          "refreshed_at": "2026-10-04T19:38:31.233068+00:00",
+          "elapsed_seconds": 3.3005
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_products_count": 0,
+          "affected_skus": [],
+          "total_documents_in_view": 8,
+          "refreshed_at": "2026-10-04T19:38:34.540603+00:00",
+          "elapsed_seconds": 3.2329
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T19:42:27.578101+00:00",
+    "end_time": "2026-10-04T19:42:33.598077+00:00",
+    "duration_seconds": 6.0201,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T19:42:33.598077+00:00",
+      "total_elapsed_seconds": 6.0201,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_periods_count": 0,
+          "affected_periods": [],
+          "total_documents_in_view": 122,
+          "refreshed_at": "2026-10-04T19:42:27.580619+00:00",
+          "elapsed_seconds": 3.0275
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_products_count": 0,
+          "affected_skus": [],
+          "total_documents_in_view": 10,
+          "refreshed_at": "2026-10-04T19:42:30.616549+00:00",
+          "elapsed_seconds": 2.9819
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:04:59.321490+00:00",
+    "end_time": "2026-10-04T20:05:05.593343+00:00",
+    "duration_seconds": 6.2723,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:05:05.593343+00:00",
+      "total_elapsed_seconds": 6.2723,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_periods_count": 0,
+          "affected_periods": [],
+          "total_documents_in_view": 121,
+          "refreshed_at": "2026-10-04T20:04:59.323566+00:00",
+          "elapsed_seconds": 3.1582
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_products_count": 0,
+          "affected_skus": [],
+          "total_documents_in_view": 8,
+          "refreshed_at": "2026-10-04T20:05:02.486270+00:00",
+          "elapsed_seconds": 3.1076
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:06:03.210405+00:00",
+    "end_time": "2026-10-04T20:06:03.284488+00:00",
+    "duration_seconds": 0.0738,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:06:03.284488+00:00",
+      "total_elapsed_seconds": 0.0738,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_periods_count": 2,
+          "affected_periods": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:06:03.230596+00:00",
+          "elapsed_seconds": 0.0439
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_products_count": 2,
+          "affected_skus": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:06:03.276720+00:00",
+          "elapsed_seconds": 0.0285
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:06:03.493598+00:00",
+    "end_time": "2026-10-04T20:06:03.498178+00:00",
+    "duration_seconds": 0.0047,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 2,
+      "top_city": "صنعاء",
+      "top_product": "Item A"
+    },
+    "error": null
+  },
+  {
+    "job_name": "faulty_test_job",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:06:03.891197+00:00",
+    "end_time": "2026-10-04T20:06:03.892197+00:00",
+    "duration_seconds": 0.0006,
+    "status": "FAILED",
+    "details": null,
+    "error": "Simulated database connection failure"
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:06:05.173158+00:00",
+    "end_time": "2026-10-04T20:06:05.177157+00:00",
+    "duration_seconds": 0.0039,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 3,
+      "top_city": "Oslo",
+      "top_product": "Wool Sweater"
+    },
+    "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:06:44.565577+00:00",
+    "end_time": "2026-10-04T20:06:50.110282+00:00",
+    "duration_seconds": 5.5442,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:06:50.110282+00:00",
+      "total_elapsed_seconds": 5.5442,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_periods_count": 0,
+          "affected_periods": [],
+          "total_documents_in_view": 121,
+          "refreshed_at": "2026-10-04T20:06:44.567845+00:00",
+          "elapsed_seconds": 2.7889
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_products_count": 0,
+          "affected_skus": [],
+          "total_documents_in_view": 8,
+          "refreshed_at": "2026-10-04T20:06:47.362573+00:00",
+          "elapsed_seconds": 2.7489
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:07:31.565334+00:00",
+    "end_time": "2026-10-04T20:07:31.569976+00:00",
+    "duration_seconds": 0.005,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 3,
+      "top_city": "Oslo",
+      "top_product": "Wool Sweater"
+    },
+    "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:07:36.290886+00:00",
+    "end_time": "2026-10-04T20:07:36.359965+00:00",
+    "duration_seconds": 0.0694,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:07:36.359965+00:00",
+      "total_elapsed_seconds": 0.0694,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_periods_count": 2,
+          "affected_periods": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:07:36.310496+00:00",
+          "elapsed_seconds": 0.0424
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_products_count": 2,
+          "affected_skus": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:07:36.352981+00:00",
+          "elapsed_seconds": 0.0257
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:07:36.560690+00:00",
+    "end_time": "2026-10-04T20:07:36.565690+00:00",
+    "duration_seconds": 0.0046,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 2,
+      "top_city": "صنعاء",
+      "top_product": "Item A"
+    },
+    "error": null
+  },
+  {
+    "job_name": "faulty_test_job",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:07:36.936969+00:00",
+    "end_time": "2026-10-04T20:07:36.936969+00:00",
+    "duration_seconds": 0.0006,
+    "status": "FAILED",
+    "details": null,
+    "error": "Simulated database connection failure"
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:22:15.930901+00:00",
+    "end_time": "2026-10-04T20:22:21.822926+00:00",
+    "duration_seconds": 5.8925,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:22:21.822926+00:00",
+      "total_elapsed_seconds": 5.8925,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_periods_count": 0,
+          "affected_periods": [],
+          "total_documents_in_view": 121,
+          "refreshed_at": "2026-10-04T20:22:15.932904+00:00",
+          "elapsed_seconds": 2.858
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_products_count": 0,
+          "affected_skus": [],
+          "total_documents_in_view": 8,
+          "refreshed_at": "2026-10-04T20:22:18.797121+00:00",
+          "elapsed_seconds": 3.0258
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:23:00.855027+00:00",
+    "end_time": "2026-10-04T20:23:00.860028+00:00",
+    "duration_seconds": 0.0045,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 3,
+      "top_city": "Oslo",
+      "top_product": "Wool Sweater"
+    },
+    "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:23:04.996769+00:00",
+    "end_time": "2026-10-04T20:23:05.072479+00:00",
+    "duration_seconds": 0.0763,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:23:05.072479+00:00",
+      "total_elapsed_seconds": 0.0763,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_periods_count": 2,
+          "affected_periods": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:23:05.017848+00:00",
+          "elapsed_seconds": 0.0514
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_products_count": 2,
+          "affected_skus": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:23:05.066222+00:00",
+          "elapsed_seconds": 0.0235
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:23:05.248803+00:00",
+    "end_time": "2026-10-04T20:23:05.253341+00:00",
+    "duration_seconds": 0.0042,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 2,
+      "top_city": "صنعاء",
+      "top_product": "Item A"
+    },
+    "error": null
+  },
+  {
+    "job_name": "faulty_test_job",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:23:05.591863+00:00",
+    "end_time": "2026-10-04T20:23:05.591863+00:00",
+    "duration_seconds": 0.0006,
+    "status": "FAILED",
+    "details": null,
+    "error": "Simulated database connection failure"
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:29:21.280949+00:00",
+    "end_time": "2026-10-04T20:29:27.264932+00:00",
+    "duration_seconds": 5.9839,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:29:27.264932+00:00",
+      "total_elapsed_seconds": 5.9839,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_periods_count": 0,
+          "affected_periods": [],
+          "total_documents_in_view": 121,
+          "refreshed_at": "2026-10-04T20:29:21.283298+00:00",
+          "elapsed_seconds": 3.0604
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "incremental",
+          "status": "up_to_date",
+          "affected_products_count": 0,
+          "affected_skus": [],
+          "total_documents_in_view": 8,
+          "refreshed_at": "2026-10-04T20:29:24.347768+00:00",
+          "elapsed_seconds": 2.916
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:30:06.026163+00:00",
+    "end_time": "2026-10-04T20:30:06.030166+00:00",
+    "duration_seconds": 0.0047,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 3,
+      "top_city": "Oslo",
+      "top_product": "Wool Sweater"
+    },
+    "error": null
+  },
+  {
+    "job_name": "refresh_materialized_views",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:30:10.181874+00:00",
+    "end_time": "2026-10-04T20:30:10.244618+00:00",
+    "duration_seconds": 0.0628,
+    "status": "SUCCESS",
+    "details": {
+      "status": "COMPLETED",
+      "refreshed_at": "2026-10-04T20:30:10.244618+00:00",
+      "total_elapsed_seconds": 0.0628,
+      "views": {
+        "daily_sales_summary": {
+          "view_name": "daily_sales_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_periods_count": 2,
+          "affected_periods": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:30:10.199804+00:00",
+          "elapsed_seconds": 0.0381
+        },
+        "top_products_summary": {
+          "view_name": "top_products_summary",
+          "mode": "full",
+          "status": "refreshed",
+          "affected_products_count": 2,
+          "affected_skus": [],
+          "total_documents_in_view": 2,
+          "refreshed_at": "2026-10-04T20:30:10.237617+00:00",
+          "elapsed_seconds": 0.0233
+        }
+      }
+    },
+    "error": null
+  },
+  {
+    "job_name": "generate_periodic_report",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:30:10.445066+00:00",
+    "end_time": "2026-10-04T20:30:10.450065+00:00",
+    "duration_seconds": 0.0043,
+    "status": "SUCCESS",
+    "details": {
+      "report_file": "D:\\level_4\\big data\\practical\\half_project\\reports\\scheduled_periodic_report.json",
+      "total_validated_orders": 2,
+      "top_city": "صنعاء",
+      "top_product": "Item A"
+    },
+    "error": null
+  },
+  {
+    "job_name": "faulty_test_job",
+    "trigger_type": "manual",
+    "start_time": "2026-10-04T20:30:10.791622+00:00",
+    "end_time": "2026-10-04T20:30:10.792741+00:00",
+    "duration_seconds": 0.0006,
+    "status": "FAILED",
+    "details": null,
+    "error": "Simulated database connection failure"
   }
 ]

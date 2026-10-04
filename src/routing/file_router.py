@@ -14,11 +14,13 @@ logger = logging.getLogger(__name__)
 def inspect_and_route(
     file_path: Union[str, Path],
     threshold_mb: float = SMALL_FILE_THRESHOLD_MB,
-    db: Optional[Any] = None
+    db: Optional[Any] = None,
+    engine: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Single execution entry point router function.
     Inspects file size in MB and selects engine ('python_batch' vs 'pyspark').
+    Supports explicit engine override ('auto', 'python_batch', 'pyspark').
     Performs pre-flight input file validation.
     Checks for active IN_PROGRESS/FAILED runs across restarts to reuse id_run.
     """
@@ -55,18 +57,26 @@ def inspect_and_route(
         id_run = f"run_{timestamp}_{unique_suffix}"
         is_resumed = False
 
-    if file_size_mb <= threshold_mb:
+    engine_choice = (engine or "auto").strip().lower()
+    if engine_choice in ["python_batch", "python", "batch"]:
         selected_engine = "python_batch"
-        reason = (
-            f"File size ({file_size_mb_display} MB) is <= threshold ({threshold_mb} MB). "
-            "Selected streaming Python Batch Loader."
-        )
-    else:
+        reason = f"Explicitly selected engine '{engine}' via request configuration."
+    elif engine_choice in ["pyspark", "spark"]:
         selected_engine = "pyspark"
-        reason = (
-            f"File size ({file_size_mb_display} MB) exceeds threshold ({threshold_mb} MB). "
-            "Selected distributed PySpark Loader."
-        )
+        reason = f"Explicitly selected engine '{engine}' via request configuration."
+    else:
+        if file_size_mb <= threshold_mb:
+            selected_engine = "python_batch"
+            reason = (
+                f"File size ({file_size_mb_display} MB) is <= threshold ({threshold_mb} MB). "
+                "Selected streaming Python Batch Loader."
+            )
+        else:
+            selected_engine = "pyspark"
+            reason = (
+                f"File size ({file_size_mb_display} MB) exceeds threshold ({threshold_mb} MB). "
+                "Selected distributed PySpark Loader."
+            )
 
     logger.info(f"File Router decision for '{path.name}': Engine={selected_engine.upper()}, Size={file_size_mb_display}MB, ID_Run={id_run}, Resumed={is_resumed}")
 

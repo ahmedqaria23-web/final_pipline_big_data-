@@ -150,7 +150,7 @@ def _clean_for_comparison(val: Any) -> Any:
         return {
             k: _clean_for_comparison(v)
             for k, v in val.items()
-            if k not in ["timestamp", "processed_at", "at_ingested", "id_run", "quarantined_at", "file_source", "number_row_source", "engine_used"]
+            if k not in ["timestamp", "processed_at", "at_ingested", "id_run", "quarantined_at", "file_source", "number_row_source", "engine_used", "updated_at"]
         }
     elif isinstance(val, list):
         return [_clean_for_comparison(x) for x in val]
@@ -164,7 +164,8 @@ def is_business_state_equal(new_record: Dict[str, Any], existing_record: Dict[st
     """
     ignore_keys = {
         "_id", "id_run", "at_ingested", "processed_at", "quarantined_at",
-        "ingest_timestamp", "file_source", "number_row_source", "engine_used"
+        "ingest_timestamp", "file_source", "number_row_source", "engine_used",
+        "updated_at"
     }
     all_keys = (set(new_record.keys()) | set(existing_record.keys())) - ignore_keys
 
@@ -221,9 +222,12 @@ def upsert_validated_batch(db: Database, records: List[Dict[str, Any]]) -> Tuple
     unchanged_count = 0
     bulk_operations = []
 
+    now_iso = datetime.now(timezone.utc).isoformat()
     for id_order, rec in dedup_map.items():
         if id_order not in existing_docs:
             inserted_count += 1
+            if "updated_at" not in rec or not rec["updated_at"]:
+                rec["updated_at"] = now_iso
             bulk_operations.append(
                 ReplaceOne(
                     {"id_order": id_order},
@@ -237,6 +241,7 @@ def upsert_validated_batch(db: Database, records: List[Dict[str, Any]]) -> Tuple
                 unchanged_count += 1
             else:
                 updated_count += 1
+                rec["updated_at"] = now_iso
                 bulk_operations.append(
                     ReplaceOne(
                         {"id_order": id_order},
